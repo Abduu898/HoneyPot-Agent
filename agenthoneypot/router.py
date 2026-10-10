@@ -97,7 +97,6 @@ def evaluate_intent_with_bedrock(query: str, user_id: str) -> str:
 BASE_DIR = Path(__file__).parent
 REAL_DB_PATH = BASE_DIR / "data" / "real_db.json"
 HONEYPOT_DB_PATH = BASE_DIR / "data" / "honeypot_db.json"
-SIMULATED_STAFF_IDS = {"staff_amira"}
 
 
 def _load_database(path: Path) -> dict:
@@ -117,13 +116,12 @@ def _find_customer(query: str, customers: list[dict]) -> dict | None:
 
 
 def route_agent_message(query: str, user_id: str) -> dict:
-    """Route chat separately from lookups; simulate staff-only access to real sample data."""
+    """Route chat separately from lookups and suspicious requests by detected intent."""
     intent = classify_agent_intent(query, user_id)
     if intent == "CHAT":
         return {"intent": intent, "event": None, "record": None}
 
-    is_staff_demo = user_id in SIMULATED_STAFF_IDS
-    verdict = "REAL" if intent == "CUSTOMER_LOOKUP" and is_staff_demo else "HONEYPOT"
+    verdict = "HONEYPOT" if intent == "HONEYPOT" else "REAL"
     database_path = REAL_DB_PATH if verdict == "REAL" else HONEYPOT_DB_PATH
     data = _load_database(database_path)
     record = _find_customer(query, data["customers"])

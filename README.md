@@ -1,11 +1,11 @@
 # 🐝 AgentHoneyPot - Active Deception for AI Agents
 
-AgentHoneyPot is a conversational security demo. Bedrock classifies each message as general chat, a customer lookup, or suspicious activity. The app replies to general chat, permits a specific sample-record lookup for its simulated staff persona, and routes suspicious or untrusted lookups to decoy data.
+AgentHoneyPot is a conversational security demo. Bedrock classifies each message as general chat, a customer lookup, or suspicious activity. The app replies to general chat, routes ordinary specific lookups to local sample data, and sends suspicious requests to decoy data.
 
 ## Features
 
 - **Conversational Replies:** Bedrock can answer greetings and explain the demo without querying customer data; a friendly fallback is used if AWS is unavailable.
-- **Controlled Sample Lookups:** The simulated staff persona can look up a specific customer record. Untrusted personas and suspicious data requests receive a decoy record.
+- **Automatic Intent Routing:** No persona is selected. Ordinary specific lookups use the sample database; suspicious requests use the decoy database.
 - **Offline Detection Fallback:** If Bedrock classification is unavailable, known suspicious phrases are checked locally.
 - **Canary Values:** Decoy customer records include fake API keys and a canary value (`FLAG{team-canary}`).
 - **Incident Logging:** Honeypot triggers are appended to `agenthoneypot/logs/incidents.jsonl`.
@@ -24,7 +24,7 @@ The command starts the interactive SOC dashboard in your browser. The original t
 
 Both customer databases contain local sample data, not production records. Bedrock is called to classify each submitted message; general chat also requests a generated reply, and honeypot incidents request a SOC summary. AWS failures fall back to phrase matching or canned replies. Configure AWS credentials using a supported boto3 provider, enable Nova Lite in `us-east-1`, and grant model invocation permission for generated responses. Do not commit AWS credentials to this repository.
 
-The selectable identity is only a local demo control, not authentication. The hard-coded staff allowlist demonstrates the intended policy boundary but must be replaced by a trusted identity provider before any real deployment. This app is a prototype, not a production security control.
+The app classifies request content; it does not identify or authenticate the person sending it. Its generated session ID is only for log correlation. Add a trusted identity provider and explicit authorization policy before connecting real customer data. This app is a prototype, not a production security control.
 
 ## Project Structure
 

@@ -9,11 +9,11 @@ An unauthorized session attempts a prompt-injection attack (`"Ignore previous in
 AgentHoneyPot is a demonstration of conversational intent classification and tool-layer routing:
 
 - **Conversational Requests:** Greetings and general questions receive a Bedrock-generated chat reply without querying either customer database.
-- **Specific Lookups:** Bedrock classifies lookup intent. A hard-coded demo allowlist permits the simulated `staff_amira` persona to retrieve a matching record from the local sample database.
-- **Decoy Data Routing:** Suspicious requests and customer lookups from other demo personas are routed to a separate decoy JSON database containing fake customer records and canary values (`FLAG{team-canary}`). If Bedrock is unavailable, known suspicious phrases are checked locally.
+- **Specific Lookups:** Bedrock classifies lookup intent. Ordinary single-customer requests are routed to the local sample database.
+- **Decoy Data Routing:** Suspicious requests are routed to a separate decoy JSON database containing fake customer records and canary values (`FLAG{team-canary}`). If Bedrock is unavailable, known suspicious phrases are checked locally.
 - **Incident Recording:** The request's timestamp, user ID, query, and verdict are appended to a JSONL incident log when the honeypot triggers.
 
-The persona selector and allowlist are for demonstration only. They are not authenticated identity or production RBAC; anyone who can use the local UI can select a persona. The demo also does not provide per-session containment or isolation across multiple requests.
+This demo classifies request content; it does not determine a person's identity or authorization. Its generated session ID is only for log correlation. It also does not provide per-session containment or isolation across multiple requests. Do not connect real customer data until trusted authentication and explicit authorization are implemented.
 
 ## 3. Security Framework Mapping
 
