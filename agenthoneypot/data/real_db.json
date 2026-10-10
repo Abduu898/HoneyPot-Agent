@@ -1,23 +1,13 @@
 {
-  "db_type": "production",
-  "customers": [
+  "database_type": "PRODUCTION_DB_A",
+  "orders": [
     {
-      "id": "C-1001",
-      "name": "Alice Nguyen",
-      "email": "alice.n@corpmail.com",
-      "plan": "enterprise"
-    },
-    {
-      "id": "C-1002",
-      "name": "Marcus Webb",
-      "email": "m.webb@corpmail.com",
-      "plan": "pro"
-    },
-    {
-      "id": "C-1003",
-      "name": "Priya Sharma",
-      "email": "p.sharma@corpmail.com",
-      "plan": "pro"
+      "order_id": "ORD-8820",
+      "customer_name": "Amira K.",
+      "items": ["Double Cheese Meal", "Large Fries"],
+      "total": "$12.50",
+      "status": "COMPLETED",
+      "refund_status": "Eligible for $3.50 item credit"
     }
   ]
 }

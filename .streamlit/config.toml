@@ -1,17 +1,15 @@
 [theme]
 base = "light"
-primaryColor = "#19745B"
-backgroundColor = "#F5F7F4"
+primaryColor = "#C74735"
+backgroundColor = "#F7F8F5"
 secondaryBackgroundColor = "#E9EFEB"
-textColor = "#1B2924"
-borderColor = "#D3DED7"
-baseRadius = "small"
-buttonRadius = "small"
-showWidgetBorder = true
+textColor = "#202B27"
 font = "sans-serif"
-
-[theme.sidebar]
-backgroundColor = "#E9EFEB"
-secondaryBackgroundColor = "#DDE7E0"
-textColor = "#1B2924"
-borderColor = "#D3DED7"
+headingFont = "sans-serif"
+baseRadius = "8px"
+buttonRadius = "8px"
+borderColor = "#D7DFD9"
+greenColor = "#16745A"
+orangeColor = "#A65B16"
+redColor = "#B83B32"
+blueColor = "#376B8C"
