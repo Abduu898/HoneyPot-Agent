@@ -6,13 +6,14 @@ An unauthorized session attempts a prompt-injection attack (`"Ignore previous in
 
 ## 2. Active Deception Architecture
 
-AgentHoneyPot is a demonstration of request routing at the tool layer:
+AgentHoneyPot is a demonstration of conversational intent classification and tool-layer routing:
 
-- **Signature-Based Detection:** Each query is checked against a list of known suspicious phrases. This is lightweight, but it is not a complete prompt-injection detector and may miss unlisted attacks or flag benign text.
-- **Decoy Data Routing:** Queries that match a signature are routed to a separate decoy JSON database containing fake customer records and canary values (`FLAG{team-canary}`). Other queries use the real demo database.
+- **Conversational Requests:** Greetings and general questions receive a Bedrock-generated chat reply without querying either customer database.
+- **Specific Lookups:** Bedrock classifies lookup intent. A hard-coded demo allowlist permits the simulated `staff_amira` persona to retrieve a matching record from the local sample database.
+- **Decoy Data Routing:** Suspicious requests and customer lookups from other demo personas are routed to a separate decoy JSON database containing fake customer records and canary values (`FLAG{team-canary}`). If Bedrock is unavailable, known suspicious phrases are checked locally.
 - **Incident Recording:** The request's timestamp, user ID, query, and verdict are appended to a JSONL incident log when the honeypot triggers.
 
-The current demo does not implement authenticated role-based access control (RBAC), per-session containment, or isolation of an attacker across multiple requests. The `user_id` is recorded for reporting; it is not used to authenticate or authorize the requester.
+The persona selector and allowlist are for demonstration only. They are not authenticated identity or production RBAC; anyone who can use the local UI can select a persona. The demo also does not provide per-session containment or isolation across multiple requests.
 
 ## 3. Security Framework Mapping
 
