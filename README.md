@@ -16,15 +16,17 @@ Start the customer portal in one terminal:
 python -m streamlit run app.py --server.port 8501
 ```
 
-Start the SOC console in another terminal:
+Start the SOC console in another terminal, bound to your computer only:
 
 ```powershell
-python -m streamlit run soc_app.py --server.port 8502
+python -m streamlit run soc_app.py --server.port 8503 --server.address 127.0.0.1
 ```
 
-The customer portal opens at `http://localhost:8501`; the SOC console opens at `http://localhost:8502`. They are separate Streamlit entry points and processes, but the SOC console still needs authentication and role-based authorization before deployment beyond a trusted local environment.
+The customer portal opens at `http://localhost:8501`; the SOC console opens at `http://127.0.0.1:8503`. They are separate Streamlit entry points and processes. The SOC console is intentionally kept local because it does not have authentication or role-based authorization.
 
-Requests matching configured text signatures are routed to the decoy JSON data and recorded in `agenthoneypot/logs/incidents.jsonl`. Analysts can request an Amazon Bedrock Nova Lite summary in `us-east-1`; a fallback alert is returned if Bedrock is unavailable.
+Use the SOC console's **Tool-call simulation** to submit a benign or suspicious tool query and inspect the exact JSON payload returned to a simulated caller. Signature matches receive the decoy data and are recorded in `agenthoneypot/logs/incidents.jsonl`; the customer portal continues to show ordinary confirmations. This is a local simulation, not a live AI-agent integration.
+
+Analysts can manually request an Amazon Bedrock Nova Lite summary in `us-east-1`; the simulator itself does not call Bedrock. A fallback alert is returned if the summary request fails.
 
 Configure AWS credentials through a supported boto3 provider and grant Bedrock model access to receive generated summaries. Never put AWS credentials in the repository.
 
