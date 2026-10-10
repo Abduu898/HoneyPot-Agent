@@ -1,55 +1,39 @@
-# AgentHoneyPot | Active Deception Demo
+AgentHoneyPot
 
-A Streamlit honeypot demonstration with separate customer-facing and analyst applications. Suspicious tool requests are routed to decoy data, while analysts can review the recorded events.
+An experimental deception layer for AI-agent tool security.
 
-## Run locally
+AgentHoneyPot explores how an application can detect suspicious tool requests, prevent unauthorized access to protected data, route simulated attacks toward synthetic decoy data, and provide security analysts with useful incident evidence.
 
-Install dependencies from the repository root:
+The Problem
 
-```powershell
-python -m pip install streamlit boto3
-```
+AI agents can use tools to retrieve records, query databases, and perform actions. If an agent is manipulated into making an unauthorized tool call, relying only on prompt-level filtering may not be sufficient.
 
-Start the customer portal in one terminal:
+The Approach
 
-```powershell
-python -m streamlit run app.py --server.port 8501
-```
+AgentHoneyPot prototypes a tool-routing layer that examines incoming requests, applies basic suspicious-pattern detection, and demonstrates deception through synthetic data and incident logging.
 
-Start the SOC console in another terminal, bound to your computer only:
+Current Implementation
 
-```powershell
-python -m streamlit run soc_app.py --server.port 8503 --server.address 127.0.0.1
-```
+* Python-based tool-call routing prototype
+* Streamlit customer-facing interface
+* Separate Streamlit SOC analyst console
+* Synthetic records and decoy responses
+* Local JSONL incident logging
+* Optional manual Amazon Bedrock incident summaries
 
-The customer portal opens at `http://localhost:8501`; the SOC console opens at `http://127.0.0.1:8503`. They are separate Streamlit entry points and processes. The SOC console is intentionally kept local because it does not have authentication or role-based authorization.
+Current Limitations
 
-Use the SOC console's **Tool-call simulation** to submit a benign or suspicious tool query and inspect the exact JSON payload returned to a simulated caller. Signature matches receive realistic synthetic decoy data and are recorded in `agenthoneypot/logs/incidents.jsonl`; the customer portal continues to show ordinary confirmations. This is a local honeypot simulation, not a live AI-agent integration.
+This is an early-stage local prototype, not a production security product. Detection currently relies on substring signatures, the workflow simulates tool calls rather than integrating with a live AI agent, and the SOC console does not provide authentication or role-based authorization. Automated session isolation is not implemented.
 
-Analysts can manually request an Amazon Bedrock Nova Lite summary in `us-east-1`; the simulator itself does not call Bedrock. A fallback alert is returned if the summary request fails.
+Roadmap
 
-Configure AWS credentials through a supported boto3 provider and grant Bedrock model access to receive generated summaries. Never put AWS credentials in the repository.
+* Integrate with a real AI agent and intercept tool calls before execution
+* Implement explicit authorization policies and least-privilege tool access
+* Improve detection and evaluate false positives and false negatives
+* Add authenticated analyst access and structured audit events
+* Implement and test deterministic session containment
+* Evaluate the system against repeatable attack scenarios
 
-## Project structure
+Status
 
-```text
-HoneyPot-Agent/
-├── .streamlit/
-│   └── config.toml
-├── app.py
-├── soc_app.py
-├── agenthoneypot/
-│   ├── data/
-│   │   ├── honeypot_db.json
-│   │   └── real_db.json
-│   ├── logs/
-│   │   └── incidents.jsonl
-│   ├── honeypot.py
-│   └── router.py
-├── defense_sheet.md
-└── main.py
-```
-
-## Important limitations
-
-This is a local demo, not a production security boundary. Detection uses substring signatures. The SOC app runs separately from the customer portal but does not currently authenticate users or enforce roles. The customer workflow does not process real transactions or persist real orders. Add an identity provider and enforce analyst roles at the deployment boundary before exposing the SOC app to a network.
+Built as an experimental AI cybersecurity hackathon prototype to explore tool-level enforcement, deception, and incident response.
