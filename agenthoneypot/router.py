@@ -3,6 +3,10 @@ AgentHoneyPot - Tool Router
 Inspects tool calls and detects prompt-injection / data-dumping intent.
 """
 
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
 # Signatures of malicious intent (prompt injection + exfiltration patterns)
 ATTACK_SIGNATURES = [
     "ignore previous instructions",
@@ -29,11 +33,9 @@ def is_malicious(query: str) -> bool:
     return any(signature in q for signature in ATTACK_SIGNATURES)
 
 
-import json
-from datetime import datetime, timezone
-
-REAL_DB_PATH = "data/real_db.json"
-HONEYPOT_DB_PATH = "data/honeypot_db.json"
+BASE_DIR = Path(__file__).parent
+REAL_DB_PATH = BASE_DIR / "data" / "real_db.json"
+HONEYPOT_DB_PATH = BASE_DIR / "data" / "honeypot_db.json"
 
 
 def route_query(query: str, user_id: str = "unknown") -> dict:
@@ -44,7 +46,7 @@ def route_query(query: str, user_id: str = "unknown") -> dict:
     malicious = is_malicious(query)
     db_path = HONEYPOT_DB_PATH if malicious else REAL_DB_PATH
 
-    with open(db_path) as f:
+    with open(db_path, encoding="utf-8") as f:
         data = json.load(f)
 
     event = {
