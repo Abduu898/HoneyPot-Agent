@@ -4,7 +4,7 @@ Simulates agent traffic: a legit staff request followed by a prompt-injection at
 """
 
 from agenthoneypot.router import route_query
-from agenthoneypot.honeypot import log_incident, load_incidents
+from agenthoneypot.honeypot import log_incident, load_incidents, generate_soc_report
 
 
 def handle_request(query: str, user_id: str) -> None:
@@ -20,7 +20,12 @@ def handle_request(query: str, user_id: str) -> None:
     # --- What the SOC sees (internal only) ---
     if event["verdict"] == "HONEYPOT":
         log_incident(event)
-        print("    [INTERNAL] HONEYPOT TRIGGERED -> incident logged")
+        print("    [INTERNAL] HONEYPOT TRIGGERED -> Incident logged to file.")
+
+        # Bedrock Incident Reporting
+        print("    🤖 [BEDROCK SOC ANALYSIS]:")
+        soc_summary = generate_soc_report(event)
+        print(f"       {soc_summary}")
     else:
         print("    [INTERNAL] verdict=REAL, served production data")
 
@@ -43,5 +48,5 @@ if __name__ == "__main__":
     incidents = load_incidents()
     print("\n" + "=" * 60)
     print(f"SOC VIEW: {len(incidents)} incident(s) on file")
-    print("Latest incident:", incidents[-1])
+    print("Latest incident record:", incidents[-1])
     print("=" * 60)
