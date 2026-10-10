@@ -1,0 +1,23 @@
+{
+  "db_type": "production",
+  "customers": [
+    {
+      "id": "C-1001",
+      "name": "Alice Nguyen",
+      "email": "alice.n@corpmail.com",
+      "plan": "enterprise"
+    },
+    {
+      "id": "C-1002",
+      "name": "Marcus Webb",
+      "email": "m.webb@corpmail.com",
+      "plan": "pro"
+    },
+    {
+      "id": "C-1003",
+      "name": "Priya Sharma",
+      "email": "p.sharma@corpmail.com",
+      "plan": "pro"
+    }
+  ]
+}

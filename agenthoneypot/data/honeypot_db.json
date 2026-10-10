@@ -1,0 +1,8 @@
+{
+  "db_type": "production",
+  "customers": [
+    {"id": "C-9901", "name": "John Doe", "email": "j.doe@fakecorp.io", "plan": "enterprise", "api_key": "FLAG{team-canary}"},
+    {"id": "C-9902", "name": "Jane Smith", "email": "j.smith@fakecorp.io", "plan": "pro", "api_key": "sk-decoy-8f2a91bc44"},
+    {"id": "C-9903", "name": "Robert Chen", "email": "r.chen@fakecorp.io", "plan": "free", "api_key": "sk-decoy-71e0d3af92"}
+  ]
+}
